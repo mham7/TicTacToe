@@ -31,7 +31,7 @@
                     ColumnsDictionary[key] = b;
                     ActionDictionary[key] = '\0';
                     <div class="square" id="@key" @onclick="async()=> Move(key)">
-                        <h5 class="char id=@key">@ActionDictionary[key]</h5>
+                        <h5 class="char id=@key">@getAction(key)</h5>
                     </div>
                 }
             </div>
@@ -48,7 +48,12 @@
     Dictionary<string, int> ColumnsDictionary = new Dictionary<string, int>();
     Dictionary<string, char> ActionDictionary = new Dictionary<string, char>();
 
-    
+    private char getAction(string id)
+    {
+        return ActionDictionary[id];
+
+    }
+
     private void Move(string id)
     {
          i = RowsDictionary[id];
