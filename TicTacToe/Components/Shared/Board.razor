@@ -1,0 +1,31 @@
+﻿@page "/board"
+
+<div>
+    <h1>Blazing Tic Tac Toe</h1>
+    <div class="board">
+        @for (int i = 0; i < 9; i++)
+        {
+            int idx = i;
+            <div class="square" @onclick="()=> SquareClicked(idx)">
+                <h5 class="char">@board[i]</h5>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    string[] board = new string[9]; // Initialize an array to represent the board
+
+    public void SquareClicked(int idx)
+    {
+        // Check if the square is empty before updating
+        if (string.IsNullOrEmpty(board[idx]))
+        {
+            board[idx] = "X"; // You can alternatively toggle between "X" and "O"
+        }
+        else
+        {
+            Console.WriteLine("Error");
+        }
+    }
+}

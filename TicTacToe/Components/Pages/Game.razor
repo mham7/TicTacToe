@@ -1,0 +1,64 @@
+﻿@page "/game"
+@using TicTacToe.Services.Interfaces
+@inject IGamService _game
+@inject IPlayerService _player
+@rendermode InteractiveServer
+
+
+
+<PageTitle>Tic Tac Toe</PageTitle>
+<h1>Blazing Tic Tac Toe</h1>
+
+<div>
+    <label for="rows">Enter Size:</label>
+    <input type="number" id="rows" @bind="rows" />
+
+    <button @onclick="async()=> await _game.StartGame(rows)">Start Game</button>
+</div>
+
+@if (_game.isGameStarted())
+{
+    <div class="grid">
+        @for (int i = 0; i < rows; i++)
+        {
+            <div class="row">
+                @for (int j = 0; j < rows; j++)
+                {
+                     int a = i;
+                    int b = j;
+                    string key = $"{a}.{b}";
+                    RowsDictionary[key]=a;
+                    ColumnsDictionary[key] = b;
+                    ActionDictionary[key] = '\0';
+                    <div class="square" id="@key" @onclick="async()=> Move(key)">
+                        <h5 class="char id=@key">@ActionDictionary[key]</h5>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+}
+@code {
+    int rows;
+    char action;
+    int i;
+    int j;
+
+    Dictionary<string,int> RowsDictionary = new Dictionary<string, int>();
+    Dictionary<string, int> ColumnsDictionary = new Dictionary<string, int>();
+    Dictionary<string, char> ActionDictionary = new Dictionary<string, char>();
+
+    
+    private void Move(string id)
+    {
+         i = RowsDictionary[id];
+         j = ColumnsDictionary[id];
+
+        char move = _player.GetMove();
+        ActionDictionary[id] = move;
+       _game.MakeMove(i,j);
+        StateHasChanged();
+    }
+    
+    
+}

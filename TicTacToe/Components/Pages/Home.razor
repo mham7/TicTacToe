@@ -1,0 +1,33 @@
+﻿@page "/"
+@rendermode InteractiveServer
+@inject Microsoft.AspNetCore.Components.NavigationManager _Nav
+
+<PageTitle>Home</PageTitle>
+
+<h1>Welcome To Blazing Tic Tac Toe</h1>
+<div>
+    <h4>Rules:</h4>
+    <p>
+        <strong>Objective:</strong> Form a line of three of your marks (either "X" or "O") horizontally, vertically, or diagonally on the 3x3 grid.
+    </p>
+    <p>
+        <strong>Gameplay:</strong> Players take turns marking an empty square on the grid. Once a square is marked, it cannot be changed.
+    </p>
+    <p>
+        <strong>Winning:</strong> The game is won as soon as one player has three of their marks in a row. This can be horizontally, vertically, or diagonally.
+    </p>
+    <p>
+        <strong>Draw:</strong> If the entire board is filled and no player has three in a row, the game is a draw.
+    </p>
+    <p>
+        <strong>Game Over:</strong> The game ends when one player wins or when there's a draw. Players may choose to play again.
+    </p>
+</div>
+<button class="btn btn-primary" @onclick="PlayGame">Play Game</button>
+
+@code {
+    void PlayGame(){
+        _Nav.NavigateTo("/game",true);
+    }
+
+}
