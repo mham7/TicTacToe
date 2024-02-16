@@ -39,18 +39,23 @@ namespace TicTacToe.Services
             }
         }
 
-        
-        public async Task setBoardsize(int size)
+        public void IntializeBoard(int size)
         {
-            game.boardsize = size;
-            game.Board = new char[size, size];
             for (int i = 0; i < size; i++)
             {
                 for (int j = 0; j < size; j++)
                 {
-                    game.Board[i, j] = '.'; 
+                    game.Board[i, j] = '.';
                 }
             }
+                 }
+        public async Task setBoardsize(int size)
+        {
+            game.boardsize = size;
+            game.Board = new char[size, size];
+            IntializeBoard(size);
+
+
         }
         public async Task StartGame(int size)
         {
@@ -190,7 +195,7 @@ namespace TicTacToe.Services
 
         public bool isDraw()
         {
-            if (_gamehelper.IsBoardFull(game.Board)){
+            if (checkFilled(game.Board)){
                 StopGame();
                 return true;
             }
@@ -212,5 +217,17 @@ namespace TicTacToe.Services
         {
             return game.Board[row, column]; 
         }
+        public bool checkFilled(char[,] array)
+        {
+            foreach (char c in array)
+            {
+                if (c == null || c == '.')
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
+}
 }

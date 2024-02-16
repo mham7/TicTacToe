@@ -17,7 +17,10 @@ namespace TicTacToe.Services.Interfaces
         bool AreEquallVertically(int val);
         bool CheckDiagonally();
         void ResetGame();
-
-
+        bool checkFilled(char[,] array);
+       
     }
+
+
+}
 }
