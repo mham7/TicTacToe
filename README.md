@@ -1,6 +1,6 @@
 # Blazor Tic Tac Toe - Dynamic Board Size
 
-Welcome to the Tic Tac Toe game with a dynamic board size, developed using Blazor! This web-based game allows you to play Tic Tac Toe on a board of any size (Size * Size), providing a customizable and engaging experience.
+Welcome to the Tic Tac Toe game with a dynamic board size, developed using Blazor! This web-based game allows you to play Tic Tac Toe on a board of any size (Size * Size), providing a customizable and engaging experience.Along with following strict constraints.
 
 ## Features
 
