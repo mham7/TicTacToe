@@ -12,7 +12,12 @@
 
         <article class="content px-4">
             <ErrorBoundary>
-                @Body
+                <ChildContent>
+                    @Body
+                </ChildContent>
+                <ErrorContent>
+                 <p class="errorUI">Sorry, something went wrong</p>
+                </ErrorContent>
             </ErrorBoundary>
         </article>
     </main>
