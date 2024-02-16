@@ -30,6 +30,11 @@ namespace TicTacToe.Services
            Player activeplayer=players.FirstOrDefault(p => p.Playerturn);
             return activeplayer;
         }
+        public int GetPlayerId()
+        {
+            Player a = GetCurrentPlayer();
+            return a.playerId;
+        }
         public char GetMove()
         {
             Player player = GetCurrentPlayer();

@@ -2,7 +2,7 @@
 @using TicTacToe.Services.Interfaces
 @inject IGamService _game
 @inject IPlayerService _player
-@inject ICacheService _cache
+@inject IGameHelper _cache
 @rendermode InteractiveServer
 
 
@@ -12,17 +12,25 @@
 
 @if (!_game.isGameStarted())
 {
-    <div>
-        <label for="rows">Enter Size:</label>
-        <input type="number" id="rows" @bind="rows" min="3" max="7" />
+    @if (AppState())
+    {
+        <div>
+            <label for="rows">Enter Size:</label>
+            <input type="number" id="rows" @bind="rows" min="3" max="7" />
 
-        <button @onclick="Start">Start Game</button>
-    </div>
+            <button @onclick="Start">Start Game</button>
+        </div>
+        @if (rows < 3 && rows > 7)
+        {
+            <p style="color: red;">Enter valid size between 3 and 7 for the best user experience.</p>
+        }
+
+    }
 }
 
 @if (_game.isGameStarted())
 {
-     <h6>Blazing Tic Tac Toe</h6>
+    <h4>Player @_player.GetPlayerId() turn</h4>
     <div class="grid">
         @for (int i = 0; i < rows; i++)
         {
@@ -33,20 +41,34 @@
                   
                     int col = j;
                     int index = row * rows + col;
-                    <div class="square" id="@key" @onclick="() => IncrementCount(row,col)">
-                        <h5 class="char id=@key">@array[row,col]"</h5>
+                    <div class="square"  @onclick="() => Play(row,col)">
+                        <h5 class="char">@array[row,col]"</h5>
                     </div>
                 }
             </div>
         }
     </div>
+
+}
+@if (ID != 0 && ID!=3)
+{
+    <div class="centered-text">
+        <h1>Player @_game.CheckForWinner() wins!</h1>
+        <button @onclick="Reset">Play Again</button>
+    </div>
+   
+}
+@if (ID== 3)
+{
+    <div class="centered-text">
+        <h1>Match has ended in a draw</h1>
+        <button @onclick="Reset">Play Again</button>
+    </div>
+    
 }
 @code {
-    string key;
     int rows;
-    // char action;
-    // int i;
-    // int j;
+    int ID = 0;
     char[,] array;
     protected override void OnInitialized()
     {
@@ -59,23 +81,48 @@
             }
         }
     }
-    private void IncrementCount(int row,int col)
+    private void Play(int row,int col)
     {
-          
-        array[row, col] = _player.GetMove();
-        
-        _player.SwitchPlayer();
+        if (array[row, col] == '.')
+        {
+            array[row, col] = _game.SetMove(row, col);
+            int id =_game.CheckForWinner();
+            if (id != 0)
+            {
+                ID = id;
+                _game.StopGame();
+
+            }
+
+        }
     }
     private void Start()
     {
-        if(rows>2){
-        OnInitialized();
-       
-        _game.StartGame(rows);
+        if(rows>2 && rows<8){
+            OnInitialized();
+            _game.StartGame(rows);
         }
 
     }
-   
+
+    private bool AppState()
+    {
+        if (ID == 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    private void Reset()
+    {
+        _game.ResetGame();
+        array = null;
+        ID = 0;
+    }
+
    
     
     
