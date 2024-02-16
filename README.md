@@ -18,4 +18,4 @@ Follow these steps:
 **Clone the Developer's Repository:**
    To view the latest code version clone the Developer Repository
    ```bash
-   git clone https://github.com/developer-username/blazor-tic-tac-toe.git
+   git clone https://github.com/mham7/TicTacToe.git
