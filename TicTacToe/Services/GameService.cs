@@ -9,7 +9,7 @@ namespace TicTacToe.Services
     public class GameService:IGamService
     {
         private readonly IPlayerService _player;
-        private readonly IGameHelper _gamehelper;
+       
 
         public static Game game = new Game
         {
@@ -18,11 +18,11 @@ namespace TicTacToe.Services
             boardsize = 0,
          };
            
-        public GameService(IPlayerService player,IGameHelper gamehelper)
+        public GameService(IPlayerService player)
         {
            
             _player = player;
-            _gamehelper = gamehelper;
+           
         }
        
         public char SetMove(int row,int column)
@@ -49,7 +49,7 @@ namespace TicTacToe.Services
                 }
             }
                  }
-        public async Task setBoardsize(int size)
+        public void setBoardsize(int size)
         {
             game.boardsize = size;
             game.Board = new char[size, size];
@@ -57,10 +57,10 @@ namespace TicTacToe.Services
 
 
         }
-        public async Task StartGame(int size)
+        public void StartGame(int size)
         {
             game.isGameActive = true;
-            await setBoardsize(size);
+             setBoardsize(size);
             
         }
 
@@ -165,6 +165,8 @@ namespace TicTacToe.Services
             int secondcount = 0;
             char firstvalue = game.Board[0, 0];
             char secondvalue= game.Board[0, game.boardsize - 1];
+            if (firstvalue != '.')
+            {
                 for (int index = 0; index < game.boardsize; index++)
                 {
                     if (firstvalue == game.Board[index, index])
@@ -175,18 +177,21 @@ namespace TicTacToe.Services
                 if (firstcount == game.boardsize)
                 {
                     return true;
-            }
-
-            for (int i = 0; i < game.boardsize; i++)
-            {
-                if (game.Board[i, game.boardsize - 1 - i] == secondvalue)
-                {
-                    secondcount++;
                 }
             }
-            if (firstcount == game.boardsize)
-            {
-                return true;
+
+            if (secondvalue != '.') { 
+                for (int i = 0; i < game.boardsize; i++)
+                {
+                    if (game.Board[i, game.boardsize - 1 - i] == secondvalue)
+                    {
+                        secondcount++;
+                    }
+                }
+                if (secondcount == game.boardsize)
+                {
+                    return true;
+                }
             }
 
 
@@ -223,11 +228,11 @@ namespace TicTacToe.Services
             {
                 if (c == null || c == '.')
                 {
-                    return true;
+                    return false;
                 }
             }
-            return false;
+            return true;
         }
     }
 }
-}
+

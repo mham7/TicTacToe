@@ -52,7 +52,7 @@ namespace TicTacToe.Services
             Player activeplayer = players.FirstOrDefault(p => p.Playerturn == false);
             return activeplayer;
         }
-        public async Task SwitchPlayer()
+        public void SwitchPlayer()
         {
             Player activeplayer=  GetCurrentPlayer();
             Player waitingplayer= GetWaitingPlayer();
