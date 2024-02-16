@@ -8,16 +8,16 @@ namespace TicTacToe.Services
     public class GameService:IGamService
     {
         private readonly IPlayerService _player;
-        
+        private readonly ICacheService _cache;
 
         public static Game game = new Game
         {
             isGameActive = false,
             isDraw = false,
             boardsize = 0,
-                   };
+         };
            
-        public GameService(IPlayerService player)
+        public GameService(IPlayerService player,ICacheService cache)
         {
             //game = new Game()
             //{
@@ -25,25 +25,55 @@ namespace TicTacToe.Services
             //    isDraw = false,
             //};
             _player = player;
+            _cache = cache;
         }
-        public async Task setBoardsize(int size)
+        public char GetMove(string id)
         {
-            game.boardsize = size;
-            game.Board = new char[size, size];  
+            int row= _cache.GetRow(id);
+            int column = _cache.GetColumn(id);
+            return game.Board[row, column];
         }
-        public async Task StartGame(int size)
-        {
-            game.isGameActive = true;
-            await setBoardsize(size);
-
-        }
-        public void MakeMove(int row, int column)
+        public async Task SetMove(int row,int column)
         {
             char move = _player.GetMove();
             if (IsMoveValid(move, row, column))
             {
                 game.Board[row, column] = move;
             }
+
+        }
+        public async Task setBoardsize(int size)
+        {
+            game.boardsize = size;
+            game.Board = new char[size, size];
+            for (int i = 0; i < size; i++)
+            {
+                for (int j = 0; j < size; j++)
+                {
+                    game.Board[i, j] = ' '; 
+                }
+            }
+        }
+        public async Task StartGame(int size)
+        {
+            game.isGameActive = true;
+            await setBoardsize(size);
+            
+        }
+
+
+        public void StopGame()
+        {
+            game.isGameActive = true;
+            game.boardsize = 0;
+        }
+        public async Task MakeMove(string id)
+        {
+            //await _cache.UpdateSquare(i,j,id);
+            int row = _cache.GetRow(id);
+            int column = _cache.GetColumn(id);
+            await SetMove(row, column);
+             //await _cache.AddMove(id);
         }
 
         public bool IsMoveValid(char move,int row, int column)

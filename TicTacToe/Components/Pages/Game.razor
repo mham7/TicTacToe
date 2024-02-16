@@ -2,6 +2,7 @@
 @using TicTacToe.Services.Interfaces
 @inject IGamService _game
 @inject IPlayerService _player
+@inject ICacheService _cache
 @rendermode InteractiveServer
 
 
@@ -9,29 +10,31 @@
 <PageTitle>Tic Tac Toe</PageTitle>
 <h1>Blazing Tic Tac Toe</h1>
 
-<div>
-    <label for="rows">Enter Size:</label>
-    <input type="number" id="rows" @bind="rows" />
+@if (!_game.isGameStarted())
+{
+    <div>
+        <label for="rows">Enter Size:</label>
+        <input type="number" id="rows" @bind="rows" min="3" max="7" />
 
-    <button @onclick="async()=> await _game.StartGame(rows)">Start Game</button>
-</div>
+        <button @onclick="Start">Start Game</button>
+    </div>
+}
 
 @if (_game.isGameStarted())
 {
+     <h6>Blazing Tic Tac Toe</h6>
     <div class="grid">
         @for (int i = 0; i < rows; i++)
         {
+            int row = i;
             <div class="row">
                 @for (int j = 0; j < rows; j++)
                 {
-                     int a = i;
-                    int b = j;
-                    string key = $"{a}.{b}";
-                    RowsDictionary[key]=a;
-                    ColumnsDictionary[key] = b;
-                    ActionDictionary[key] = '\0';
-                    <div class="square" id="@key" @onclick="async()=> Move(key)">
-                        <h5 class="char id=@key">@getAction(key)</h5>
+                  
+                    int col = j;
+                    int index = row * rows + col;
+                    <div class="square" id="@key" @onclick="() => IncrementCount(row,col)">
+                        <h5 class="char id=@key">@array[row,col]"</h5>
                     </div>
                 }
             </div>
@@ -39,31 +42,41 @@
     </div>
 }
 @code {
+    string key;
     int rows;
-    char action;
-    int i;
-    int j;
-
-    Dictionary<string,int> RowsDictionary = new Dictionary<string, int>();
-    Dictionary<string, int> ColumnsDictionary = new Dictionary<string, int>();
-    Dictionary<string, char> ActionDictionary = new Dictionary<string, char>();
-
-    private char getAction(string id)
+    // char action;
+    // int i;
+    // int j;
+    char[,] array;
+    protected override void OnInitialized()
     {
-        return ActionDictionary[id];
+        array = new char[rows,rows]; 
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < rows; j++)
+            {
+                array[i, j] = '.';
+            }
+        }
+    }
+    private void IncrementCount(int row,int col)
+    {
+          
+        array[row, col] = _player.GetMove();
+        
+        _player.SwitchPlayer();
+    }
+    private void Start()
+    {
+        if(rows>2){
+        OnInitialized();
+       
+        _game.StartGame(rows);
+        }
 
     }
-
-    private void Move(string id)
-    {
-         i = RowsDictionary[id];
-         j = ColumnsDictionary[id];
-
-        char move = _player.GetMove();
-        ActionDictionary[id] = move;
-       _game.MakeMove(i,j);
-        StateHasChanged();
-    }
+   
+   
     
     
 }

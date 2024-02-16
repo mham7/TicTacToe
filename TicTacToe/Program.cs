@@ -6,6 +6,7 @@ using TicTacToe.Services.Interfaces;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddScoped<ICacheService,CacheService>();
 builder.Services.AddScoped<IPlayerService, PlayerService>();
 builder.Services.AddScoped<IGamService,GameService>();
 builder.Services.AddRazorComponents()

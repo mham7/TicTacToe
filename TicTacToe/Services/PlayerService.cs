@@ -23,21 +23,12 @@ namespace TicTacToe.Services
             };
         public PlayerService() { }
 
-        //public void makemove(int row,int colum)
-        //{
-        //    Player current=GetCurrentPlayer();
-        //    if (current.Move == PlayerAction.X)
-        //    {
-
-        //    }
-        //}
-
         
 
         public Player GetCurrentPlayer()
         {
-           Player activeplayer=players.FirstOrDefault(p=>p.Playerturn==true);
-           return activeplayer;   
+           Player activeplayer=players.FirstOrDefault(p => p.Playerturn);
+            return activeplayer;
         }
         public char GetMove()
         {
@@ -56,9 +47,9 @@ namespace TicTacToe.Services
             Player activeplayer = players.FirstOrDefault(p => p.Playerturn == false);
             return activeplayer;
         }
-        public void SwitchPlayer()
+        public async Task SwitchPlayer()
         {
-            Player activeplayer= GetCurrentPlayer();
+            Player activeplayer=  GetCurrentPlayer();
             Player waitingplayer= GetWaitingPlayer();
             waitingplayer.Playerturn = true;
             activeplayer.Playerturn= false;

@@ -6,7 +6,7 @@ namespace TicTacToe.Services.Interfaces
     {
         Player GetCurrentPlayer();
         Player GetWaitingPlayer();
-        void SwitchPlayer();
+        Task SwitchPlayer();
         char GetMove();
     }
 }

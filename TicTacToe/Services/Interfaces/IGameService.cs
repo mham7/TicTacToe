@@ -3,9 +3,9 @@
     public interface IGamService
     {
         Task setBoardsize(int size);
-        void MakeMove(int row, int column);
+        Task MakeMove(string id);
         bool IsMoveValid(char move,int row, int column);
-
+        char GetMove(string id);
         char GetBoardValue(int row, int column);
         Task DetermineWinner();
         Task StartGame(int size);
