@@ -9,20 +9,21 @@ namespace TicTacToe.Services
     public class GameService:IGamService
     {
         private readonly IPlayerService _player;
-       
 
-        public static Game game = new Game
-        {
-            isGameActive = false,
-            isDraw = false,
-            boardsize = 0,
-         };
+
+        private Game game;
            
         public GameService(IPlayerService player)
         {
            
             _player = player;
-           
+            game = new Game()
+            {
+                isGameActive = false,
+                isDraw = false,
+                boardsize = 0,
+            };
+
         }
        
         public char SetMove(int row,int column)
