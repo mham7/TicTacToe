@@ -6,13 +6,18 @@ namespace TicTacToe.Services
 {
     public class PlayerService:IPlayerService
     {
-        public static List<Player> players = new List<Player>
+        private List<Player> players;
+        public PlayerService()
+        {
+
+
+            players = new List<Player>
             {  new Player
             {
                 playerId = 1,
                 Playerturn=true,
                 Move=PlayerAction.X,
-               
+
             },
              new Player
             {
@@ -21,7 +26,7 @@ namespace TicTacToe.Services
                 Move=PlayerAction.O,
             }
             };
-        public PlayerService() { }
+        }
 
         
 
@@ -52,7 +57,7 @@ namespace TicTacToe.Services
             Player activeplayer = players.FirstOrDefault(p => p.Playerturn == false);
             return activeplayer;
         }
-        public async Task SwitchPlayer()
+        public void SwitchPlayer()
         {
             Player activeplayer=  GetCurrentPlayer();
             Player waitingplayer= GetWaitingPlayer();
